@@ -13,6 +13,7 @@ import android.util.Log;
 import com.example.chadyeo.updatedbakingapp.adapter.RecipeAdapter;
 import com.example.chadyeo.updatedbakingapp.api.BakingRetrofitClient;
 import com.example.chadyeo.updatedbakingapp.api.BakingRetrofitService;
+import com.example.chadyeo.updatedbakingapp.data.RecipeContentResolver;
 import com.example.chadyeo.updatedbakingapp.data.RecipeContract;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
 
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     if (response.isSuccessful()) {
                         recipes = new ArrayList<>(response.body());
                         populateRecipeList();
+                        RecipeContentResolver.insertContentResolver(getApplicationContext(), recipes);
                         Log.v(LOG_TAG, "displayData: onResponse is successful");
                     }
                 }
