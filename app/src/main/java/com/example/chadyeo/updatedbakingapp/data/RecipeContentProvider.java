@@ -19,6 +19,7 @@ public class RecipeContentProvider extends ContentProvider {
     public static final int INGREDIENTS = 101;
     public static final int STEPS = 102;
 
+    private RecipeDbHelper mRecipeDbHelper;
     // The URI Matcher used by this content provider
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -30,8 +31,6 @@ public class RecipeContentProvider extends ContentProvider {
         //uriMatcher.addURI(RecipeContract.AUTHORITY, RecipeContract.PATH_STEPS, STEPS);
         return uriMatcher;
     }
-
-    private RecipeDbHelper mRecipeDbHelper;
 
     @Override
     public boolean onCreate() {
@@ -73,7 +72,8 @@ public class RecipeContentProvider extends ContentProvider {
 
         switch (match) {
             case RECIPE:
-                cursor = db.query(RecipeEntry.TABLE_NAME,
+                cursor = db.query(
+                        RecipeEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,

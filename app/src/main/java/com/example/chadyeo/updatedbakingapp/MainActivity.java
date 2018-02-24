@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         recipes = new ArrayList<>(response.body());
                         populateRecipeList();
                         RecipeContentResolver.insertContentResolver(getApplicationContext(), recipes);
+
                         Log.v(LOG_TAG, "displayData: onResponse is successful");
                     }
                 }

@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class RecipeContract {
-    public static final String AUTHORITY = "com.example.chadyeo.bakingapp2";
+    public static final String AUTHORITY = "com.example.chadyeo.updatedbakingapp";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 

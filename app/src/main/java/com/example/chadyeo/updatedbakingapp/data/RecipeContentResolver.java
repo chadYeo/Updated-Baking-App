@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
 
@@ -15,6 +16,7 @@ public class RecipeContentResolver {
 
     public static void insertContentResolver(Context context, ArrayList<Recipe> recipes) {
         insertRecipeCR(context, recipes);
+        Log.v(LOG_TAG, "Inserting data thru ContentResolver is initiated");
     }
 
     private static void insertRecipeCR(final Context context, final ArrayList<Recipe> recipes) {
@@ -43,7 +45,6 @@ public class RecipeContentResolver {
         for (int i=0; i<recipes.size(); i++) {
             Recipe data = recipes.get(i);
             ContentValues mRecipeValue = new ContentValues();
-            mRecipeValue.put(RecipeContract.RecipeEntry._ID, data.getId());
             mRecipeValue.put(RecipeContract.RecipeEntry.COLUMN_NAME, data.getName());
             mRecipeValue.put(RecipeContract.RecipeEntry.COLUMN_SERVINGS, data.getServings());
             recipeContentValues[i] = mRecipeValue;

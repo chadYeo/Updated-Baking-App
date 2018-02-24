@@ -20,7 +20,7 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         final String CREATE_TABLE =
                 "CREATE TABLE " + RecipeEntry.TABLE_NAME + " (" +
-                        RecipeEntry._ID + " INTEGER PRIMARY KEY, " +
+                        RecipeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         RecipeEntry.COLUMN_NAME + " TEXT NOT NULL, " +
                         RecipeEntry.COLUMN_SERVINGS + " TEXT NOT NULL);";
 
