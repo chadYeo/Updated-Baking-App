@@ -1,13 +1,15 @@
 package com.example.chadyeo.updatedbakingapp;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.example.chadyeo.updatedbakingapp.fragments.StepsListFragment;
 
 public class DetailActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = DetailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +20,7 @@ public class DetailActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         StepsListFragment stepsListFragment = new StepsListFragment();
 
-        Bundle bundle = new Bundle();
-
         fragmentTransaction.add(R.id.detailActivity_container, stepsListFragment);
         fragmentTransaction.commit();
-
-        stepsListFragment.setArguments(bundle);
     }
 }

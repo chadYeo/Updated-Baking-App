@@ -11,16 +11,20 @@ import android.widget.TextView;
 
 import com.example.chadyeo.updatedbakingapp.DetailActivity;
 import com.example.chadyeo.updatedbakingapp.R;
+import com.example.chadyeo.updatedbakingapp.model.Ingredient;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
-    private Context context;
-    private ArrayList<Recipe> recipes;
+    private static final String LOG_TAG = RecipeAdapter.class.getSimpleName();
 
-    public RecipeAdapter(Context context, ArrayList<Recipe> recipes) {
+    private Context context;
+    private List<Recipe> recipes;
+
+    public RecipeAdapter(Context context, List<Recipe> recipes) {
         this.context = context;
         this.recipes = recipes;
     }
@@ -45,7 +49,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             @Override
             public void onClick(View v) {
                 Intent detailIntent = new Intent(context, DetailActivity.class);
+                if (recipe.getIngredients() != null) {
+                    ArrayList<Ingredient> ingredients = recipe.getIngredients();
 
+                    detailIntent.putExtra("ingredients", ingredients);
+                    detailIntent.putExtra("name", recipe.getId());
+                }
                 context.startActivity(detailIntent);
             }
         });
