@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.chadyeo.updatedbakingapp.R;
+import com.example.chadyeo.updatedbakingapp.adapter.StepAdapter;
 import com.example.chadyeo.updatedbakingapp.model.Ingredient;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
 import com.example.chadyeo.updatedbakingapp.model.Step;
@@ -26,8 +28,11 @@ public class StepsListFragment extends Fragment {
     private static final String LOG_TAG = StepsListFragment.class.getSimpleName();
 
     ArrayList<Ingredient> ingredients;
+    ArrayList<Step> steps;
 
     private TextView mIngredientTextView;
+    private RecyclerView mStepsRecyclerView;
+    private StepAdapter mStepAdapter;
 
     public StepsListFragment() {
         // Required empty public constructor
@@ -40,14 +45,26 @@ public class StepsListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_steps_list, container, false);
 
         mIngredientTextView = (TextView)view.findViewById(R.id.ingredients);
+        mStepsRecyclerView = (RecyclerView)view.findViewById(R.id.detailView_steps_recyclerView);
+        mStepsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ingredients = new ArrayList<>();
         ingredients = (ArrayList<Ingredient>)getActivity().getIntent().getExtras().getSerializable("ingredients");
 
         insertIngredientsData(mIngredientTextView, ingredients);
 
-        String ex = ingredients.get(0).getIngredient();
-        Log.e(LOG_TAG, ex);
+        steps = new ArrayList<>();
+        steps = (ArrayList<Step>)getActivity().getIntent().getExtras().getSerializable("steps");
+
+        mStepAdapter = new StepAdapter(getContext(), steps);
+        mStepsRecyclerView.setAdapter(mStepAdapter);
+
+        Log.e(LOG_TAG, steps.get(0).getId().toString());
+        Log.e(LOG_TAG, steps.get(0).getShortDescription().toString());
+        Log.e(LOG_TAG, steps.get(1).getId().toString());
+        Log.e(LOG_TAG, steps.get(1).getShortDescription().toString());
+        Log.e(LOG_TAG, steps.get(2).getId().toString());
+        Log.e(LOG_TAG, steps.get(2).getShortDescription().toString());
 
         return view;
     }

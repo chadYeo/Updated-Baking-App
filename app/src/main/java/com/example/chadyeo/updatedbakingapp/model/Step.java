@@ -3,7 +3,9 @@ package com.example.chadyeo.updatedbakingapp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Step {
+import java.io.Serializable;
+
+public class Step implements Serializable {
 
     @SerializedName("id")
     @Expose

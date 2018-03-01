@@ -13,6 +13,7 @@ import com.example.chadyeo.updatedbakingapp.DetailActivity;
 import com.example.chadyeo.updatedbakingapp.R;
 import com.example.chadyeo.updatedbakingapp.model.Ingredient;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
+import com.example.chadyeo.updatedbakingapp.model.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +50,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             @Override
             public void onClick(View v) {
                 Intent detailIntent = new Intent(context, DetailActivity.class);
-                if (recipe.getIngredients() != null) {
+                if (recipe.getIngredients() != null && recipe.getSteps() != null) {
                     ArrayList<Ingredient> ingredients = recipe.getIngredients();
+                    ArrayList<Step> steps = recipe.getSteps();
 
+                    detailIntent.putExtra("steps", steps);
                     detailIntent.putExtra("ingredients", ingredients);
                     detailIntent.putExtra("name", recipe.getId());
                 }
