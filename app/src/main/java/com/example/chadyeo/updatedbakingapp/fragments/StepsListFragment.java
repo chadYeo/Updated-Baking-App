@@ -1,14 +1,10 @@
 package com.example.chadyeo.updatedbakingapp.fragments;
 
 
-import android.app.LoaderManager;
-import android.content.Intent;
-import android.content.Loader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +13,9 @@ import android.widget.TextView;
 import com.example.chadyeo.updatedbakingapp.R;
 import com.example.chadyeo.updatedbakingapp.adapter.StepAdapter;
 import com.example.chadyeo.updatedbakingapp.model.Ingredient;
-import com.example.chadyeo.updatedbakingapp.model.Recipe;
 import com.example.chadyeo.updatedbakingapp.model.Step;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StepsListFragment extends Fragment {
 
@@ -56,15 +50,8 @@ public class StepsListFragment extends Fragment {
         steps = new ArrayList<>();
         steps = (ArrayList<Step>)getActivity().getIntent().getExtras().getSerializable("steps");
 
-        mStepAdapter = new StepAdapter(getContext(), steps);
+        mStepAdapter = new StepAdapter(steps);
         mStepsRecyclerView.setAdapter(mStepAdapter);
-
-        Log.e(LOG_TAG, steps.get(0).getId().toString());
-        Log.e(LOG_TAG, steps.get(0).getShortDescription().toString());
-        Log.e(LOG_TAG, steps.get(1).getId().toString());
-        Log.e(LOG_TAG, steps.get(1).getShortDescription().toString());
-        Log.e(LOG_TAG, steps.get(2).getId().toString());
-        Log.e(LOG_TAG, steps.get(2).getShortDescription().toString());
 
         return view;
     }

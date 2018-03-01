@@ -1,53 +1,46 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/steps_list_scroolView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:apps="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.example.chadyeo.updatedbakingapp.fragments.StepsListFragment">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/recipe_ingredients_button"
+    <android.support.v7.widget.CardView
+        android:id="@+id/recipe_ingredients_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/cardview_light_background">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@color/cardview_light_background">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginLeft="8dp"
+                android:text="Ingredients:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="Ingredients:"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+            <TextView
+                android:id="@+id/ingredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="8dp"
+                tools:text="100 cups of love" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/selector_recyclerview">
+        </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/ingredients"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/black"
-                        android:layout_marginLeft="8dp"
-                        tools:text="100" />
+    </android.support.v7.widget.CardView>
 
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/detailView_steps_recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/detailView_steps_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
