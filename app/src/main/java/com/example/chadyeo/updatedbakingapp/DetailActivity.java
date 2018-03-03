@@ -40,10 +40,8 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void selectPopBackStackDetailTag() {
-        if (getSupportFragmentManager().findFragmentByTag("Ingredient_Detail_TAG") != null) {
-            getSupportFragmentManager().popBackStack("Ingredient_Detail_TAG", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        } else if (getSupportFragmentManager().findFragmentByTag("Steps_Detail_TAG") != null){
-            getSupportFragmentManager().popBackStack("Steps_Detail_TAG", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        if (getSupportFragmentManager().findFragmentByTag("Steps_List_TAG") != null) {
+            getSupportFragmentManager().popBackStack("Steps_List_TAG", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         } else {
             super.onBackPressed();
         }

@@ -10,8 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,15 +18,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chadyeo.updatedbakingapp.R;
 import com.example.chadyeo.updatedbakingapp.adapter.StepAdapter;
@@ -57,15 +54,13 @@ import java.util.ArrayList;
 public class StepsDetailFragment extends Fragment implements ExoPlayer.EventListener {
 
     private static final String LOG_TAG = StepsDetailFragment.class.getSimpleName();
-    private static final int DETAIL_STEP_LOADER_ID = 4845;
     private static final String NOTIFICATION_CHANNEL_ID = "my_notification_channel";
+    private static final int STEPS_DETAIL_LOADER_ID = 1100;
 
-    private ProgressBar mProgressbar;
     private ImageView mNoVideoImageView;
     private TextView mDetailSteps_textView;
     private ImageButton mArrowBackImageButton;
     private ImageButton mArrowForwardImageButton;
-    private StepAdapter mStepAdapter;
     private FrameLayout mExoMediaFrame;
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mSimpleExoPlayerView;
@@ -76,9 +71,10 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private PlaybackStateCompat.Builder mStateBuilder;
     private NotificationManager mNotificationManager;
 
-    private boolean mIsExoPlayerFullscreen;
+    ArrayList<Step> steps;
     private int stepsPosition;
     private int numberOfSteps;
+    private boolean mIsExoPlayerFullscreen;
 
     public StepsDetailFragment() {
     }
@@ -89,12 +85,9 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
         View view = inflater.inflate(R.layout.fragment_steps_detail, container, false);
 
-        mStepAdapter = new StepAdapter(new ArrayList<Step>());
-
         Bundle extras_stepsPosition = this.getArguments();
         stepsPosition = extras_stepsPosition.getInt("stepsPosition");
 
-        mProgressbar = (ProgressBar)view.findViewById(R.id.detail_steps_progressBar);
         mNoVideoImageView = (ImageView)view.findViewById(R.id.image_no_video_imageView);
         mExoMediaFrame = (FrameLayout)view.findViewById(R.id.main_media_frame);
         mSimpleExoPlayerView = (SimpleExoPlayerView)view.findViewById(R.id.steps_playerView);
@@ -105,6 +98,14 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         mArrowForwardImageButton = (ImageButton)view.findViewById(R.id.arrow_forward_imageButton);
 
         mFullScreenDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+
+        steps = new ArrayList<>();
+        steps = (ArrayList<Step>)getActivity().getIntent().getExtras().getSerializable("steps");
+
+        numberOfSteps = steps.size();
+
+        String videoUrl = steps.get(stepsPosition).getVideoURL();
+        String detailSteps = steps.get(stepsPosition).getDescription();
 
         mExoFullScreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,14 +122,15 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             @Override
             public void onClick(View view) {
                 if (stepsPosition == 0) {
+                    Toast.makeText(getContext(), "You are at the first steps", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
                     stepsPosition = stepsPosition - 1;
 
-                    String previousDescription = mStepAdapter.steps.get(stepsPosition).getDescription();
+                    String previousDescription = steps.get(stepsPosition).getDescription();
                     mDetailSteps_textView.setText(previousDescription);
 
-                    String previousVideoURL = mStepAdapter.steps.get(stepsPosition).getVideoURL();
+                    String previousVideoURL = steps.get(stepsPosition).getVideoURL();
                     releasePlayer();
                     initializePlayer(Uri.parse(previousVideoURL));
                     if (previousVideoURL.isEmpty()) {
@@ -143,14 +145,15 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             @Override
             public void onClick(View view) {
                 if (stepsPosition == numberOfSteps - 1) {
+                    Toast.makeText(getContext(), "You are at the last steps", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
                     stepsPosition = stepsPosition + 1;
 
-                    String nextDescription = mStepAdapter.steps.get(stepsPosition).getDescription();
+                    String nextDescription = steps.get(stepsPosition).getDescription();
                     mDetailSteps_textView.setText(nextDescription);
 
-                    String nextVideoURL = mStepAdapter.steps.get(stepsPosition).getVideoURL();
+                    String nextVideoURL = steps.get(stepsPosition).getVideoURL();
                     releasePlayer();
                     initializePlayer(Uri.parse(nextVideoURL));
                     if (nextVideoURL.isEmpty()) {
@@ -161,14 +164,14 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             }
         });
 
-        ConnectivityManager cm = (ConnectivityManager)view.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-
-        if (networkInfo != null && networkInfo.isConnected()) {
-            Log.v(LOG_TAG, "Network is Connected");
+        mDetailSteps_textView.setText(detailSteps);
+        if (videoUrl.isEmpty()) {
+            mSimpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(),R.drawable.image_no_video));
+            mSimpleExoPlayerView.hideController();
         } else {
-            mProgressbar.setVisibility(View.GONE);
+            initializePlayer(Uri.parse(videoUrl));
         }
+
         initializeMediaSession();
 
         return view;
@@ -207,10 +210,11 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         super.onStart();
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (!mStepAdapter.steps.get(stepsPosition).getVideoURL().isEmpty()) {
+        if (!steps.get(stepsPosition).getVideoURL().isEmpty()) {
             releasePlayer();
         }
         mMediaSession.setActive(false);
