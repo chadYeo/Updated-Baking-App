@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.chadyeo.updatedbakingapp.fragments.StepsListFragment;
@@ -15,7 +16,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            selectPopBackStackDetailTag();
+            super.onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -23,7 +24,7 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        selectPopBackStackDetailTag();
+        super.onBackPressed();
     }
 
     @Override
@@ -37,13 +38,5 @@ public class DetailActivity extends AppCompatActivity {
 
         fragmentTransaction.add(R.id.detailActivity_container, stepsListFragment);
         fragmentTransaction.commit();
-    }
-
-    private void selectPopBackStackDetailTag() {
-        if (getSupportFragmentManager().findFragmentByTag("Steps_List_TAG") != null) {
-            getSupportFragmentManager().popBackStack("Steps_List_TAG", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        } else {
-            super.onBackPressed();
-        }
     }
 }

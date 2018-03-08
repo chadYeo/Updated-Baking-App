@@ -18,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chadyeo.updatedbakingapp.R;
-import com.example.chadyeo.updatedbakingapp.adapter.StepAdapter;
 import com.example.chadyeo.updatedbakingapp.model.Step;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -55,7 +55,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
     private static final String LOG_TAG = StepsDetailFragment.class.getSimpleName();
     private static final String NOTIFICATION_CHANNEL_ID = "my_notification_channel";
-    private static final int STEPS_DETAIL_LOADER_ID = 1100;
 
     private ImageView mNoVideoImageView;
     private TextView mDetailSteps_textView;
@@ -75,6 +74,8 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private int stepsPosition;
     private int numberOfSteps;
     private boolean mIsExoPlayerFullscreen;
+    private String videoUrl;
+    private String detailSteps;
 
     public StepsDetailFragment() {
     }
@@ -104,8 +105,17 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
         numberOfSteps = steps.size();
 
-        String videoUrl = steps.get(stepsPosition).getVideoURL();
-        String detailSteps = steps.get(stepsPosition).getDescription();
+        videoUrl = steps.get(stepsPosition).getVideoURL();
+        detailSteps = steps.get(stepsPosition).getDescription();
+
+        if (videoUrl.isEmpty()) {
+            mSimpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(),R.drawable.image_no_video));
+            mSimpleExoPlayerView.hideController();
+        } else {
+            initializePlayer(Uri.parse(videoUrl));
+        }
+
+        mDetailSteps_textView.setText(detailSteps);
 
         mExoFullScreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +128,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             }
         });
 
+
         mArrowBackImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,17 +136,21 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     Toast.makeText(getContext(), "You are at the first steps", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
+                    if (!videoUrl.isEmpty()) {
+                        releasePlayer();
+                    }
                     stepsPosition = stepsPosition - 1;
 
-                    String previousDescription = steps.get(stepsPosition).getDescription();
-                    mDetailSteps_textView.setText(previousDescription);
+                    detailSteps = steps.get(stepsPosition).getDescription();
+                    mDetailSteps_textView.setText(detailSteps);
 
-                    String previousVideoURL = steps.get(stepsPosition).getVideoURL();
-                    releasePlayer();
-                    initializePlayer(Uri.parse(previousVideoURL));
-                    if (previousVideoURL.isEmpty()) {
+                    videoUrl = steps.get(stepsPosition).getVideoURL();
+
+                    if (videoUrl.isEmpty()) {
                         mSimpleExoPlayerView.hideController();
                         mSimpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.image_no_video));
+                    } else {
+                        initializePlayer(Uri.parse(videoUrl));
                     }
                 }
             }
@@ -148,30 +163,26 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     Toast.makeText(getContext(), "You are at the last steps", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
+                    if (!videoUrl.isEmpty()) {
+                        releasePlayer();
+                    }
                     stepsPosition = stepsPosition + 1;
 
-                    String nextDescription = steps.get(stepsPosition).getDescription();
-                    mDetailSteps_textView.setText(nextDescription);
+                    detailSteps = steps.get(stepsPosition).getDescription();
+                    mDetailSteps_textView.setText(detailSteps);
 
-                    String nextVideoURL = steps.get(stepsPosition).getVideoURL();
-                    releasePlayer();
-                    initializePlayer(Uri.parse(nextVideoURL));
-                    if (nextVideoURL.isEmpty()) {
+                    videoUrl = steps.get(stepsPosition).getVideoURL();
+
+                    if (videoUrl.isEmpty()) {
                         mSimpleExoPlayerView.hideController();
                         mSimpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.image_no_video));
+                    } else {
+                        initializePlayer(Uri.parse(videoUrl));
                     }
                 }
             }
         });
-
-        mDetailSteps_textView.setText(detailSteps);
-        if (videoUrl.isEmpty()) {
-            mSimpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(),R.drawable.image_no_video));
-            mSimpleExoPlayerView.hideController();
-        } else {
-            initializePlayer(Uri.parse(videoUrl));
-        }
-
+        
         initializeMediaSession();
 
         return view;
@@ -209,7 +220,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     public void onStart() {
         super.onStart();
     }
-
 
     @Override
     public void onDestroy() {
