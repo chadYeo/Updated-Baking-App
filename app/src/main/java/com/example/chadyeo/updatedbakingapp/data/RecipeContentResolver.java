@@ -6,7 +6,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.chadyeo.updatedbakingapp.model.Ingredient;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -16,6 +19,7 @@ public class RecipeContentResolver {
 
     public static void insertContentResolver(Context context, ArrayList<Recipe> recipes) {
         insertRecipeCR(context, recipes);
+        insertIngredientsCR(context, recipes);
         Log.v(LOG_TAG, "Inserting data thru ContentResolver is initiated");
     }
 
@@ -23,12 +27,12 @@ public class RecipeContentResolver {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-
                 try {
                     ContentValues[] recipeValues = getRecipeContentValuesFromArray(context, recipes);
                     if (recipeValues != null && recipeValues.length != 0) {
                         ContentResolver recipeContentResolver = context.getContentResolver();
-                        recipeContentResolver.bulkInsert(RecipeContract.RecipeEntry.CONTENT_URI, recipeValues);
+                        recipeContentResolver.delete(RecipeContract.RecipeEntry.RECIPE_CONTENT_URI, null, null);
+                        recipeContentResolver.bulkInsert(RecipeContract.RecipeEntry.RECIPE_CONTENT_URI, recipeValues);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -45,10 +49,57 @@ public class RecipeContentResolver {
         for (int i=0; i<recipes.size(); i++) {
             Recipe data = recipes.get(i);
             ContentValues mRecipeValue = new ContentValues();
-            mRecipeValue.put(RecipeContract.RecipeEntry.COLUMN_NAME, data.getName());
-            mRecipeValue.put(RecipeContract.RecipeEntry.COLUMN_SERVINGS, data.getServings());
+            mRecipeValue.put(RecipeContract.RecipeEntry.RECIPES_COLUMN_ID, data.getId());
+            mRecipeValue.put(RecipeContract.RecipeEntry.RECIPES_COLUMN_NAME, data.getName());
+            mRecipeValue.put(RecipeContract.RecipeEntry.RECIPES_COLUMN_SERVINGS, data.getServings());
             recipeContentValues[i] = mRecipeValue;
         }
         return recipeContentValues;
+    }
+
+    private static void insertIngredientsCR(final Context context, final ArrayList<Recipe> data) {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    ContentValues[] ingredientValues = getIngredientsContentValuesFromArray(context, data);
+                    if (ingredientValues != null && ingredientValues.length != 0) {
+                        ContentResolver ingredientsContentResolver = context.getContentResolver();
+                        ingredientsContentResolver.delete(RecipeContract.RecipeEntry.INGREDIENT_CONTENT_URI, null, null);
+                        ingredientsContentResolver.bulkInsert(RecipeContract.RecipeEntry.INGREDIENT_CONTENT_URI, ingredientValues);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+    }
+
+    private static ContentValues[] getIngredientsContentValuesFromArray(Context context, ArrayList<Recipe> recipes) {
+
+        ArrayList<ContentValues> ingredientContentValuesArrayList = new ArrayList<>();
+
+        for (int i=0; i<recipes.size(); i++) {
+            Recipe data = recipes.get(i);
+            ArrayList<Ingredient> ingredients = data.getIngredients();
+
+            for (int j=0; j < ingredients.size(); j++) {
+                Ingredient currentIngredient = ingredients.get(j);
+
+                ContentValues mIngredientValues = new ContentValues();
+                mIngredientValues.put(RecipeContract.RecipeEntry.RECIPES_COLUMN_ID, data.getId());
+                mIngredientValues.put(RecipeContract.RecipeEntry.INGREDIENTS_COLUMN_INGREDIENT, currentIngredient.getIngredient());
+                mIngredientValues.put(RecipeContract.RecipeEntry.INGREDIENTS_COLUMN_QUANTITY, currentIngredient.getQuantity());
+                mIngredientValues.put(RecipeContract.RecipeEntry.INGREDIENTS_COLUMN_MEASURE, currentIngredient.getMeasure());
+                ingredientContentValuesArrayList.add(mIngredientValues);
+
+            }
+        }
+        ContentValues[] ingredientContentValue = new ContentValues[ingredientContentValuesArrayList.size()];
+        ingredientContentValue = ingredientContentValuesArrayList.toArray(ingredientContentValue);
+
+        return ingredientContentValue;
     }
 }

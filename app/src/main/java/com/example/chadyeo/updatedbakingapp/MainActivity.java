@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
         try {
-            return new CursorLoader(this, RecipeContract.RecipeEntry.CONTENT_URI,
+            return new CursorLoader(this, RecipeContract.RecipeEntry.RECIPE_CONTENT_URI,
                     null,
                     null,
                     null,
@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recipes = new ArrayList<>();
         recipes.clear();
         if (data != null && data.moveToFirst()) {
-            int mRecipeIdIndex = data.getColumnIndex(RecipeContract.RecipeEntry._ID);
-            int mRecipeNameIndex = data.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_NAME);
-            int mRecipeServingsIndex = data.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_SERVINGS);
+            int mRecipeIdIndex = data.getColumnIndex(RecipeContract.RecipeEntry.RECIPES_COLUMN_ID);
+            int mRecipeNameIndex = data.getColumnIndex(RecipeContract.RecipeEntry.RECIPES_COLUMN_NAME);
+            int mRecipeServingsIndex = data.getColumnIndex(RecipeContract.RecipeEntry.RECIPES_COLUMN_SERVINGS);
             do {
                 Recipe recipe = new Recipe();
                 recipe.setId(data.getInt(mRecipeIdIndex));

@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.example.chadyeo.updatedbakingapp.data.RecipeContract.RecipeEntry;
-import com.example.chadyeo.updatedbakingapp.data.RecipeContract.IngredientsEntry;
 import static com.example.chadyeo.updatedbakingapp.data.RecipeContract.AUTHORITY;
 import static com.example.chadyeo.updatedbakingapp.data.RecipeContract.PATH_INGREDIENTS;
 import static com.example.chadyeo.updatedbakingapp.data.RecipeContract.PATH_RECIPES;
@@ -55,9 +54,9 @@ public class RecipeContentProvider extends ContentProvider {
 
         switch (match) {
             case RECIPE:
-                long id = db.insert(RecipeEntry.TABLE_NAME, null, values);
+                long id = db.insert(RecipeEntry.RECIPES_TABLE_NAME, null, values);
                 if (id > 0) {
-                    returnUri = ContentUris.withAppendedId(RecipeEntry.CONTENT_URI, id);
+                    returnUri = ContentUris.withAppendedId(RecipeEntry.RECIPE_CONTENT_URI, id);
                 } else {
                     throw new SQLException("Failed to insert row into " + uri);
                 }
@@ -79,7 +78,7 @@ public class RecipeContentProvider extends ContentProvider {
         switch (match) {
             case RECIPE:
                 cursor = db.query(
-                        RecipeEntry.TABLE_NAME,
+                        RecipeEntry.RECIPES_TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -90,7 +89,7 @@ public class RecipeContentProvider extends ContentProvider {
 
             case INGREDIENTS:
                 cursor = db.query(
-                        IngredientsEntry.TABLE_NAME,
+                        RecipeEntry.INGREDIENTS_TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -104,7 +103,7 @@ public class RecipeContentProvider extends ContentProvider {
                 String[] selectionArguments = new String[]{id};
 
                 cursor = db.query(
-                        IngredientsEntry.TABLE_NAME,
+                        RecipeEntry.INGREDIENTS_TABLE_NAME,
                         projection,
                         RecipeEntry._ID + " = ?",
                         selectionArguments,
@@ -134,7 +133,7 @@ public class RecipeContentProvider extends ContentProvider {
 
                 try {
                     for (ContentValues value : values) {
-                        long _id = db.insert(RecipeEntry.TABLE_NAME, null, value);
+                        long _id = db.insert(RecipeEntry.RECIPES_TABLE_NAME, null, value);
                         if (_id != -1) {
                             numRowsInserted++;
                         }
@@ -154,7 +153,7 @@ public class RecipeContentProvider extends ContentProvider {
 
                 try {
                     for (ContentValues value : values) {
-                        long _id = db.insert(IngredientsEntry.TABLE_NAME, null, value);
+                        long _id = db.insert(RecipeEntry.INGREDIENTS_TABLE_NAME, null, value);
                         if (_id != -1) {
                             numRowsInserted++;
                         }
@@ -183,14 +182,14 @@ public class RecipeContentProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             case RECIPE:
                 numRowsDeleted = mRecipeDbHelper.getWritableDatabase().delete(
-                        RecipeEntry.TABLE_NAME,
+                        RecipeEntry.RECIPES_TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
 
             case INGREDIENTS:
                 numRowsDeleted = mRecipeDbHelper.getWritableDatabase().delete(
-                        IngredientsEntry.TABLE_NAME,
+                        RecipeEntry.INGREDIENTS_TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
