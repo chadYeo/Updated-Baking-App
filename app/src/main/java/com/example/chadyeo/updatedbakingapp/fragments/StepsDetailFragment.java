@@ -109,9 +109,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         detailSteps = steps.get(stepsPosition).getDescription();
 
         if (videoUrl.isEmpty()) {
-            mSimpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(),R.drawable.image_no_video));
+            mNoVideoImageView.setVisibility(View.VISIBLE);
+            mSimpleExoPlayerView.setVisibility(View.GONE);
             mSimpleExoPlayerView.hideController();
         } else {
+            mNoVideoImageView.setVisibility(View.GONE);
+            mSimpleExoPlayerView.setVisibility(View.VISIBLE);
             initializePlayer(Uri.parse(videoUrl));
         }
 
@@ -147,9 +150,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     videoUrl = steps.get(stepsPosition).getVideoURL();
 
                     if (videoUrl.isEmpty()) {
+                        mNoVideoImageView.setVisibility(View.VISIBLE);
+                        mSimpleExoPlayerView.setVisibility(View.GONE);
                         mSimpleExoPlayerView.hideController();
-                        mSimpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.image_no_video));
                     } else {
+                        mNoVideoImageView.setVisibility(View.GONE);
+                        mSimpleExoPlayerView.setVisibility(View.VISIBLE);
                         initializePlayer(Uri.parse(videoUrl));
                     }
                 }
@@ -174,15 +180,18 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     videoUrl = steps.get(stepsPosition).getVideoURL();
 
                     if (videoUrl.isEmpty()) {
+                        mNoVideoImageView.setVisibility(View.VISIBLE);
+                        mSimpleExoPlayerView.setVisibility(View.GONE);
                         mSimpleExoPlayerView.hideController();
-                        mSimpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.image_no_video));
                     } else {
+                        mNoVideoImageView.setVisibility(View.GONE);
+                        mSimpleExoPlayerView.setVisibility(View.VISIBLE);
                         initializePlayer(Uri.parse(videoUrl));
                     }
                 }
             }
         });
-        
+
         initializeMediaSession();
 
         return view;
