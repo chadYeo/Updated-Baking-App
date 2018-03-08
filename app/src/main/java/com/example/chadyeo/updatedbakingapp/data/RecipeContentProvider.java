@@ -11,18 +11,21 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.chadyeo.updatedbakingapp.data.RecipeContract.RecipeEntry;
 import static com.example.chadyeo.updatedbakingapp.data.RecipeContract.AUTHORITY;
 import static com.example.chadyeo.updatedbakingapp.data.RecipeContract.PATH_INGREDIENTS;
 import static com.example.chadyeo.updatedbakingapp.data.RecipeContract.PATH_RECIPES;
+import static com.example.chadyeo.updatedbakingapp.data.RecipeContract.PATH_STEPS;
 
 public class RecipeContentProvider extends ContentProvider {
     public static final int RECIPE = 100;
     public static final int INGREDIENTS = 101;
     public static final int STEPS = 102;
-    public static final int INGREDIENTS_WITH_ID = 1001;
-    public static final int STEPS_WITH_ID = 1002;
+    public static final int RECIPE_WITH_ID = 1001;
+    public static final int INGREDIENTS_WITH_ID = 1002;
+    public static final int STEPS_WITH_ID = 1003;
 
     private RecipeDbHelper mRecipeDbHelper;
     // The URI Matcher used by this content provider
@@ -32,9 +35,12 @@ public class RecipeContentProvider extends ContentProvider {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(AUTHORITY, PATH_RECIPES, RECIPE);
+        uriMatcher.addURI(AUTHORITY, PATH_RECIPES + "/#", RECIPE_WITH_ID);
         uriMatcher.addURI(AUTHORITY, PATH_INGREDIENTS, INGREDIENTS);
         uriMatcher.addURI(AUTHORITY, PATH_INGREDIENTS + "/#", INGREDIENTS_WITH_ID);
-        //uriMatcher.addURI(RecipeContract.AUTHORITY, RecipeContract.PATH_STEPS, STEPS);
+        uriMatcher.addURI(AUTHORITY, PATH_STEPS, STEPS);
+        uriMatcher.addURI(AUTHORITY, PATH_STEPS + "/#", STEPS_WITH_ID);
+
         return uriMatcher;
     }
 
@@ -76,7 +82,7 @@ public class RecipeContentProvider extends ContentProvider {
         Cursor cursor;
 
         switch (match) {
-            case RECIPE:
+            case RECIPE: {
                 cursor = db.query(
                         RecipeEntry.RECIPES_TABLE_NAME,
                         projection,
@@ -86,8 +92,23 @@ public class RecipeContentProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+            }
 
-            case INGREDIENTS:
+            case RECIPE_WITH_ID: {
+                String id = uri.getLastPathSegment();
+                String[] selectionArguments = new String[]{id};
+                cursor = db.query(
+                        RecipeEntry.RECIPES_TABLE_NAME,
+                        projection,
+                        RecipeEntry.RECIPES_COLUMN_ID + " = ? ",
+                        selectionArguments,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+
+            case INGREDIENTS: {
                 cursor = db.query(
                         RecipeEntry.INGREDIENTS_TABLE_NAME,
                         projection,
@@ -97,20 +118,51 @@ public class RecipeContentProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+            }
 
-            case INGREDIENTS_WITH_ID:
+            case INGREDIENTS_WITH_ID: {
                 String id = uri.getLastPathSegment();
                 String[] selectionArguments = new String[]{id};
 
                 cursor = db.query(
                         RecipeEntry.INGREDIENTS_TABLE_NAME,
                         projection,
-                        RecipeEntry._ID + " = ?",
+                        RecipeEntry.RECIPES_COLUMN_ID + " = ?",
                         selectionArguments,
                         null,
                         null,
                         sortOrder);
                 break;
+            }
+
+            case STEPS: {
+                cursor = db.query(
+                        RecipeEntry.STEPS_TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+
+            case STEPS_WITH_ID: {
+                String id = uri.getLastPathSegment();
+                String[] selectionArguments = new String[]{id};
+
+                cursor = db.query(
+                        RecipeEntry.STEPS_TABLE_NAME,
+                        projection,
+                        RecipeEntry.RECIPES_COLUMN_ID + " = ? ",
+                        selectionArguments,
+                        null,
+                        null,
+                        sortOrder);
+
+                break;
+            }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -127,10 +179,9 @@ public class RecipeContentProvider extends ContentProvider {
         int numRowsInserted = 0;
 
         switch (sUriMatcher.match(uri)) {
-            case RECIPE:
+            case RECIPE: {
                 db.beginTransaction();
                 numRowsInserted = 0;
-
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insert(RecipeEntry.RECIPES_TABLE_NAME, null, value);
@@ -146,11 +197,11 @@ public class RecipeContentProvider extends ContentProvider {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
                 return numRowsInserted;
+            }
 
-            case INGREDIENTS:
+            case INGREDIENTS: {
                 db.beginTransaction();
                 numRowsInserted = 0;
-
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insert(RecipeEntry.INGREDIENTS_TABLE_NAME, null, value);
@@ -166,6 +217,27 @@ public class RecipeContentProvider extends ContentProvider {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
                 return numRowsInserted;
+            }
+
+            case STEPS: {
+                db.beginTransaction();
+                numRowsInserted = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(RecipeEntry.STEPS_TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            numRowsInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();;
+                } finally {
+                    db.endTransaction();
+                }
+                if (numRowsInserted > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return numRowsInserted;
+            }
 
             default:
                 return super.bulkInsert(uri, values);
@@ -190,6 +262,13 @@ public class RecipeContentProvider extends ContentProvider {
             case INGREDIENTS:
                 numRowsDeleted = mRecipeDbHelper.getWritableDatabase().delete(
                         RecipeEntry.INGREDIENTS_TABLE_NAME,
+                        selection,
+                        selectionArgs);
+                break;
+
+            case STEPS:
+                numRowsDeleted = mRecipeDbHelper.getWritableDatabase().delete(
+                        RecipeEntry.STEPS_TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;

@@ -33,14 +33,25 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
                         RecipeEntry.INGREDIENTS_COLUMN_MEASURE + " TEXT NOT NULL, " +
                         RecipeEntry.INGREDIENTS_COLUMN_INGREDIENT + " TEXT NOT NULL);";
 
+        final String CREATE_STEP_TABLE =
+                "CREATE TABLE " + RecipeEntry.STEPS_TABLE_NAME + " (" +
+                        RecipeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        RecipeEntry.RECIPES_COLUMN_ID + " INTEGER NOT NULL, " +
+                        RecipeEntry.STEPS_COLUMN_ID + " INTEGER NOT NULL, " +
+                        RecipeEntry.STEPS_COLUMN_SHORT_DESC + " TEXT NOT NULL, " +
+                        RecipeEntry.STEPS_COLUMN_DESC + " TEXT NOT NULL, " +
+                        RecipeEntry.STEPS_COLUMN_VIDEOURL + " TEXT NOT NULL);";
+
         db.execSQL(CREATE_RECIPE_TABLE);
         db.execSQL(CREATE_INGREDIENT_TABLE);
+        db.execSQL(CREATE_STEP_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + RecipeEntry.RECIPES_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + RecipeEntry.INGREDIENTS_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + RecipeEntry.STEPS_TABLE_NAME);
         onCreate(db);
     }
 }

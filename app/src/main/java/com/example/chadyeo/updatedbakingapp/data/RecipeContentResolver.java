@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.example.chadyeo.updatedbakingapp.model.Ingredient;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
+import com.example.chadyeo.updatedbakingapp.model.Step;
 
 import org.json.JSONException;
 
@@ -20,6 +21,7 @@ public class RecipeContentResolver {
     public static void insertContentResolver(Context context, ArrayList<Recipe> recipes) {
         insertRecipeCR(context, recipes);
         insertIngredientsCR(context, recipes);
+        insertStepsCR(context, recipes);
         Log.v(LOG_TAG, "Inserting data thru ContentResolver is initiated");
     }
 
@@ -101,5 +103,49 @@ public class RecipeContentResolver {
         ingredientContentValue = ingredientContentValuesArrayList.toArray(ingredientContentValue);
 
         return ingredientContentValue;
+    }
+
+    private static void insertStepsCR(final Context context, final ArrayList<Recipe> data) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    ContentValues[] stepsValues = getStepsContentValuesFromArray(context, data);
+                    if (stepsValues != null && stepsValues.length != 0) {
+                        ContentResolver stepsContentResolver = context.getContentResolver();
+                        stepsContentResolver.delete(RecipeContract.RecipeEntry.STEPS_CONTENT_URI, null, null);
+                        stepsContentResolver.bulkInsert(RecipeContract.RecipeEntry.STEPS_CONTENT_URI, stepsValues);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+    }
+
+    private static ContentValues[] getStepsContentValuesFromArray(Context context, ArrayList<Recipe> recipes) {
+        ArrayList<ContentValues> stepsContentValuesArrayList = new ArrayList<>();
+
+        for (int i=0; i<recipes.size(); i++) {
+            Recipe data = recipes.get(i);
+            ArrayList<Step> steps = data.getSteps();
+
+            for(int j=0; j<steps.size(); j++) {
+                Step currentStep = steps.get(j);
+
+                ContentValues mStepValues = new ContentValues();
+                mStepValues.put(RecipeContract.RecipeEntry.RECIPES_COLUMN_ID, data.getId());
+                mStepValues.put(RecipeContract.RecipeEntry.STEPS_COLUMN_ID, currentStep.getId());
+                mStepValues.put(RecipeContract.RecipeEntry.STEPS_COLUMN_SHORT_DESC, currentStep.getShortDescription());
+                mStepValues.put(RecipeContract.RecipeEntry.STEPS_COLUMN_DESC, currentStep.getDescription());
+                mStepValues.put(RecipeContract.RecipeEntry.STEPS_COLUMN_VIDEOURL, currentStep.getVideoURL());
+                stepsContentValuesArrayList.add(mStepValues);
+            }
+        }
+        ContentValues[] stepContentValues = new ContentValues[stepsContentValuesArrayList.size()];
+        stepContentValues = stepsContentValuesArrayList.toArray(stepContentValues);
+
+        return stepContentValues;
     }
 }
