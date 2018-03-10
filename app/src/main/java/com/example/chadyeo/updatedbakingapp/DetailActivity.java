@@ -42,24 +42,35 @@ public class DetailActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        StepsListFragment stepsListFragment = new StepsListFragment();
+        StepsDetailFragment stepsDetailFragment = new StepsDetailFragment();
+
+        Bundle bundle = new Bundle();
 
         if (findViewById(R.id.twoPane_linearLayout) != null) {
             mTwoPane = true;
+            bundle.putBoolean("mTwoPane", true);
 
             if (savedInstanceState == null) {
-                StepsListFragment stepsListFragment = new StepsListFragment();
-                fragmentTransaction.add(R.id.twoPane_list_fragment, stepsListFragment);
-                fragmentTransaction.commit();
 
-                StepsDetailFragment stepsDetailFragment = new StepsDetailFragment();
+                fragmentTransaction.add(R.id.twoPane_list_fragment, stepsListFragment);
                 fragmentTransaction.add(R.id.twoPane_detail_fragment, stepsDetailFragment);
                 fragmentTransaction.commit();
             }
         } else {
             mTwoPane = false;
-            StepsListFragment stepsListFragment = new StepsListFragment();
+            bundle.putBoolean("mTwoPane", false);
+
             fragmentTransaction.add(R.id.detailActivity_container, stepsListFragment);
             fragmentTransaction.commit();
         }
+        stepsListFragment.setArguments(bundle);
+        stepsDetailFragment.setArguments(bundle);
+
+        Log.e(LOG_TAG, "Bundle twoPane is " + mTwoPane);
+    }
+
+    public boolean isTwoPane() {
+        return mTwoPane;
     }
 }

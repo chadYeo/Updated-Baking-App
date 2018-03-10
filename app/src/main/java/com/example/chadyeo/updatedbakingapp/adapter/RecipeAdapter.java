@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.chadyeo.updatedbakingapp.DetailActivity;
+import com.example.chadyeo.updatedbakingapp.MainActivity;
 import com.example.chadyeo.updatedbakingapp.R;
 import com.example.chadyeo.updatedbakingapp.model.Ingredient;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;

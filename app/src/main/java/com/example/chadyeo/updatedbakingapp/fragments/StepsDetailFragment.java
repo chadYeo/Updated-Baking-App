@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chadyeo.updatedbakingapp.DetailActivity;
 import com.example.chadyeo.updatedbakingapp.R;
 import com.example.chadyeo.updatedbakingapp.model.Step;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -76,6 +77,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private boolean mIsExoPlayerFullscreen;
     private String videoUrl;
     private String detailSteps;
+    private boolean mTwoPane;
 
     public StepsDetailFragment() {
     }
@@ -87,7 +89,13 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         View view = inflater.inflate(R.layout.fragment_steps_detail, container, false);
 
         Bundle extras_stepsPosition = this.getArguments();
-        stepsPosition = extras_stepsPosition.getInt("stepsPosition");
+        mTwoPane = extras_stepsPosition.getBoolean("mTwoPane");
+        Log.e(LOG_TAG, "twoPane is " + mTwoPane);
+        if (mTwoPane) {
+            stepsPosition = 0;
+        } else {
+            stepsPosition = extras_stepsPosition.getInt("stepsPosition");
+        }
 
         mNoVideoImageView = (ImageView)view.findViewById(R.id.image_no_video_imageView);
         mExoMediaFrame = (FrameLayout)view.findViewById(R.id.main_media_frame);

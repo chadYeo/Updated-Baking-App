@@ -5,11 +5,15 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.widget.Toast;
 
 import com.example.chadyeo.updatedbakingapp.adapter.RecipeAdapter;
 import com.example.chadyeo.updatedbakingapp.api.BakingRetrofitClient;
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerView mRecyclerView;
     private BakingRetrofitService mService;
     private RecipeAdapter mRecipeAdapter;
+    private boolean twoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mService = BakingRetrofitClient.getClient().create(BakingRetrofitService.class);
         mRecyclerView = (RecyclerView) findViewById(R.id.recipes_recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float density  = getResources().getDisplayMetrics().density;
+        float dpWidth  = outMetrics.widthPixels / density;
+        if (dpWidth >= 600) {
+            twoPane = true;
+        } else {
+            twoPane = false;
+        }
 
         displayData();
     }
@@ -118,5 +135,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mRecyclerView.setAdapter(mRecipeAdapter);
 
         Log.v(LOG_TAG, "populateRecipeList initiated");
+    }
+
+    public boolean isTwoPane() {
+        return twoPane;
     }
 }
