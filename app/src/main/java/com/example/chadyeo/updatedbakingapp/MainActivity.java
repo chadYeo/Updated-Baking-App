@@ -1,5 +1,6 @@
 package com.example.chadyeo.updatedbakingapp;
 
+import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -15,6 +16,7 @@ import com.example.chadyeo.updatedbakingapp.api.BakingRetrofitClient;
 import com.example.chadyeo.updatedbakingapp.api.BakingRetrofitService;
 import com.example.chadyeo.updatedbakingapp.data.RecipeContentResolver;
 import com.example.chadyeo.updatedbakingapp.data.RecipeContract;
+import com.example.chadyeo.updatedbakingapp.fragments.StepsListFragment;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
 
 import java.util.ArrayList;
