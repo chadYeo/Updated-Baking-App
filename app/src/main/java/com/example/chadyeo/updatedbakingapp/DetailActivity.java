@@ -1,5 +1,6 @@
 package com.example.chadyeo.updatedbakingapp;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,8 +25,10 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            super.onBackPressed();
-            return true;
+            if (!mTwoPane) {
+                super.onBackPressed();
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }

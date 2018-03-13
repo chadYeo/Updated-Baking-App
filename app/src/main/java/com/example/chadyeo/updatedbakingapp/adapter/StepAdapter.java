@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder>{
 
     public ArrayList<Step> steps;
+    private boolean twoPane;
 
     public StepAdapter(ArrayList<Step> steps) {
         this.steps = steps;
@@ -38,13 +39,23 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
             public void onClick(View view) {
                 DetailActivity detailActivity = (DetailActivity)view.getContext();
                 StepsDetailFragment stepsDetailFragment = new StepsDetailFragment();
+                twoPane = detailActivity.isTwoPane();
+                if (twoPane) {
+                    view.setSelected(true);
+                    notifyItemChanged(position);
 
-                detailActivity.getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.detailActivity_container, stepsDetailFragment)
-                        .addToBackStack("Steps_List_TAG")
-                        .commit();
-
+                    detailActivity.getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.twoPane_detail_fragment, stepsDetailFragment)
+                            .addToBackStack("Steps_List_TAG")
+                            .commit();
+                } else {
+                    detailActivity.getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.detailActivity_container, stepsDetailFragment)
+                            .addToBackStack("Steps_List_TAG")
+                            .commit();
+                }
                 Bundle args= new Bundle();
                 args.putInt("stepsPosition", position);
                 stepsDetailFragment.setArguments(args);

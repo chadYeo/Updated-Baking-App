@@ -53,6 +53,7 @@ public class StepsListFragment extends Fragment {
         mStepAdapter = new StepAdapter(steps);
         mStepsRecyclerView.setAdapter(mStepAdapter);
 
+
         return view;
     }
 
