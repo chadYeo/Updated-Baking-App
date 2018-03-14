@@ -1,26 +1,26 @@
 package com.example.chadyeo.updatedbakingapp;
 
-import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Point;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.widget.Toast;
 
 import com.example.chadyeo.updatedbakingapp.adapter.RecipeAdapter;
 import com.example.chadyeo.updatedbakingapp.api.BakingRetrofitClient;
 import com.example.chadyeo.updatedbakingapp.api.BakingRetrofitService;
 import com.example.chadyeo.updatedbakingapp.data.RecipeContentResolver;
 import com.example.chadyeo.updatedbakingapp.data.RecipeContract;
-import com.example.chadyeo.updatedbakingapp.fragments.StepsListFragment;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
 
 import java.util.ArrayList;
@@ -33,13 +33,24 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private static final int RECIPE_LOADER_ID = 0;
 
     private ArrayList<Recipe> recipes;
     private RecyclerView mRecyclerView;
     private BakingRetrofitService mService;
     private RecipeAdapter mRecipeAdapter;
     private boolean twoPane;
+
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
         displayData();
+        getIdlingResource();
     }
 
     @Override
@@ -100,6 +112,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             while (data.moveToNext());
         }
         populateRecipeList();
+        if (mIdlingResource != null) {
+            mIdlingResource.setIdleState(true);
+        }
     }
 
     @Override
@@ -110,6 +125,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (recipes != null) {
             populateRecipeList();
         } else {
+            if (mIdlingResource != null) {
+                mIdlingResource.setIdleState(false);
+            }
             Call<List<Recipe>> call = mService.getRecipes();
             call.enqueue(new Callback<List<Recipe>>() {
                 @Override
@@ -118,7 +136,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         recipes = new ArrayList<>(response.body());
                         populateRecipeList();
                         RecipeContentResolver.insertContentResolver(getApplicationContext(), recipes);
-
+                        if (mIdlingResource != null) {
+                            mIdlingResource.setIdleState(true);
+                        }
                         Log.v(LOG_TAG, "displayData: onResponse is successful");
                     }
                 }
