@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.chadyeo.updatedbakingapp.data.RecipeContract;
 import com.example.chadyeo.updatedbakingapp.fragments.StepsDetailFragment;
@@ -42,6 +43,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        String recipeName = getIntent().getExtras().getString("name");
+        getSupportActionBar().setTitle(recipeName);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
