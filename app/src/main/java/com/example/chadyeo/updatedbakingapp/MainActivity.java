@@ -4,6 +4,8 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +17,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chadyeo.updatedbakingapp.adapter.RecipeAdapter;
 import com.example.chadyeo.updatedbakingapp.api.BakingRetrofitClient;
@@ -39,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private BakingRetrofitService mService;
     private RecipeAdapter mRecipeAdapter;
     private boolean twoPane;
+    private ProgressBar mProgressBar;
+    private TextView mNoInternetTextView;
 
     @Nullable
     private SimpleIdlingResource mIdlingResource;
@@ -60,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mService = BakingRetrofitClient.getClient().create(BakingRetrofitService.class);
         mRecyclerView = (RecyclerView) findViewById(R.id.recipes_recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_mainActivity);
+        mNoInternetTextView = (TextView) findViewById(R.id.noInternet_textView);
 
         Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics ();
@@ -73,7 +83,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             twoPane = false;
         }
 
-        displayData();
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            displayData();
+        } else {
+            mNoInternetTextView.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.GONE);
+            Toast.makeText(this, "There's no Internet Connection", Toast.LENGTH_SHORT).show();
+        }
+
         getIdlingResource();
     }
 
@@ -153,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void populateRecipeList() {
         mRecipeAdapter = new RecipeAdapter(this, recipes);
         mRecyclerView.setAdapter(mRecipeAdapter);
-
+        mProgressBar.setVisibility(View.GONE);
         Log.v(LOG_TAG, "populateRecipeList initiated");
     }
 
