@@ -7,5 +7,7 @@
     <string name="pause">Pause</string>
     <string name="restart">Restart</string>
     <string name="notification_text">Press play to play the steps</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>
