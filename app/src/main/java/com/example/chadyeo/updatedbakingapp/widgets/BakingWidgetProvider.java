@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
@@ -23,8 +24,7 @@ public class BakingWidgetProvider extends AppWidgetProvider {
                                 int appWidgetId, ArrayList<Ingredient> ingredients, String recipeName) {
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
-        // views.setTextViewText(R.id.recipe_name_appwidget_text, recipeName);
-        views.removeAllViews(R.id.widget_ingredients_container);
+        views.setTextViewText(R.id.recipe_name_appwidget_text, recipeName);
         insertIngredientsData(views, ingredients, context);
 
         Intent intent = new Intent(context, MainActivity.class);
@@ -60,7 +60,7 @@ public class BakingWidgetProvider extends AppWidgetProvider {
 
             String fullDesc = "  - " + String.valueOf(qty) + " " + measure + " of " + actualIngredient + "\n";
             mIngredientView.setTextViewText(R.id.widget_ingredients, fullDesc);
-            mIngredientView.addView(R.id.widget_ingredients_container, remoteView);
+            remoteView.addView(R.id.widget_ingredients_container, mIngredientView);
         }
     }
     @Override
@@ -73,6 +73,11 @@ public class BakingWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
     }
 }
 

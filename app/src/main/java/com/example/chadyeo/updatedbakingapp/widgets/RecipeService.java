@@ -56,14 +56,14 @@ public class RecipeService extends IntentService {
             }
             **/
 
-            String[] selectionArgs = {"1"};
+            //String[] selectionArgs = {"0"};
 
             Cursor mIngredientCursor = getContentResolver().query(
                     RecipeContract.RecipeEntry.INGREDIENT_CONTENT_URI,
                     null,
                     null,
-                    selectionArgs,
-                    RecipeContract.RecipeEntry.RECIPES_COLUMN_ID + " ASC");
+                    null,
+                    RecipeContract.RecipeEntry._ID + " ASC");
 
             ingredients = new ArrayList<>();
 
