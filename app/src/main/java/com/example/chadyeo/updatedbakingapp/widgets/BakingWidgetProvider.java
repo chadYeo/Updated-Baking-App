@@ -3,11 +3,14 @@ package com.example.chadyeo.updatedbakingapp.widgets;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.RemoteViews;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chadyeo.updatedbakingapp.MainActivity;
 import com.example.chadyeo.updatedbakingapp.R;
@@ -38,6 +41,7 @@ public class BakingWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+
     }
 
     public static void updateRecipeWidgets(Context context, AppWidgetManager appWidgetManager,
