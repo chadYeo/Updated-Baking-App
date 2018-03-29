@@ -6,10 +6,11 @@
     android:background="#09C"
     android:orientation="vertical">
 
-    <!--
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <ImageButton
             android:id="@+id/widget_arrow_back"
@@ -26,7 +27,7 @@
             android:src="@drawable/ic_action_arrow_forward"/>
 
     </LinearLayout>
-    -->
+
     <TextView
         android:id="@+id/recipe_name_appwidget_text"
         android:layout_width="match_parent"
