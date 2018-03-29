@@ -83,8 +83,8 @@ public class RecipeService extends IntentService {
 
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
                 int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, BakingWidgetProvider.class));
-                String recipeName = "Nutella Pie";
-                // String recipeName = recipes.get(0).getName();
+                //String recipeName = recipes.get(0).getName().toString();
+                String recipeName = "Brownies";
                 BakingWidgetProvider.updateRecipeWidgets(getApplicationContext(), appWidgetManager, appWidgetIds, ingredients, recipeName);
             }
         } catch (Exception e) {
