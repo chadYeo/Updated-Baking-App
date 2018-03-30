@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.example.chadyeo.updatedbakingapp.DetailActivity;
 import com.example.chadyeo.updatedbakingapp.R;
 import com.example.chadyeo.updatedbakingapp.model.Step;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -72,7 +73,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private NotificationManager mNotificationManager;
 
     ArrayList<Step> steps;
-    int videoPosition;
+    long videoPosition;
     private int stepsPosition;
     private int numberOfSteps;
     private boolean mIsExoPlayerFullscreen;
@@ -89,11 +90,10 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
         View view = inflater.inflate(R.layout.fragment_steps_detail, container, false);
 
-        if (savedInstanceState == null) {
-            Bundle arguments = new Bundle();
-            arguments.putInt("position", getActivity().getIntent().getIntExtra("position", 0));
-
+        if (savedInstanceState != null) {
+           videoPosition = savedInstanceState.getLong("SELECTED_POSITION", C.TIME_UNSET);
         }
+
         Bundle extras_stepsPosition = this.getArguments();
         mTwoPane = extras_stepsPosition.getBoolean("mTwoPane");
         Log.e(LOG_TAG, "twoPane is " + mTwoPane);
@@ -211,6 +211,29 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initializePlayer(Uri.parse(videoUrl));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mExoPlayer != null) {
+            videoPosition = mExoPlayer.getCurrentPosition();
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("SELECTED_POSITION", videoPosition);
+    }
+
     /**
      * Initializes the Media Session to be enabled with media buttons, transport controls, callbacks
      * and media controller.
@@ -247,9 +270,11 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onDestroy() {
         super.onDestroy();
+        /**
         if (!steps.get(stepsPosition).getVideoURL().isEmpty()) {
             releasePlayer();
         }
+         */
         mMediaSession.setActive(false);
     }
 
@@ -309,6 +334,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.seekTo(videoPosition);
             mExoPlayer.addListener(this);
         }
     }

@@ -19,7 +19,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/DetailActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/DetailActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/fragments/StepsDetailFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/fragments/StepsDetailFragment.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -47,31 +46,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="StepsDetailFragment.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="StepsDetailFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/fragments/StepsDetailFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="250" column="28" lean-forward="false" selection-start-line="250" selection-start-column="28" selection-end-line="250" selection-end-column="28" />
-              <folding />
+            <state relative-caret-position="475">
+              <caret line="169" column="28" lean-forward="true" selection-start-line="169" selection-start-column="28" selection-end-line="169" selection-end-column="28" />
+              <folding>
+                <element signature="e#14224#14225#0" expanded="true" />
+                <element signature="e#14282#14283#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="56" column="38" lean-forward="false" selection-start-line="56" selection-start-column="38" selection-end-line="56" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DetailActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DetailActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/DetailActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="59" column="33" lean-forward="false" selection-start-line="59" selection-start-column="33" selection-end-line="59" selection-end-column="33" />
+            <state relative-caret-position="589">
+              <caret line="61" column="69" lean-forward="false" selection-start-line="61" selection-start-column="45" selection-end-line="61" selection-end-column="69" />
               <folding />
             </state>
           </provider>
@@ -91,14 +83,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>insertCont</find>
-      <find>ingredientContentValue</find>
-      <find>Ingredient</find>
-      <find>final</find>
-      <find>detailfrag</find>
-      <find>twoPane</find>
-      <find>notifyItemChanged</find>
-      <find>espresso</find>
       <find>name</find>
       <find>extra</find>
       <find>Toast</find>
@@ -121,6 +105,14 @@
       <find>startActionRecipe</find>
       <find>startService</find>
       <find>RecipeService</find>
+      <find>onpause</find>
+      <find>onPause</find>
+      <find>onResume</find>
+      <find>r</find>
+      <find>initializePlayer</find>
+      <find>videoPosition</find>
+      <find>releasePlayer</find>
+      <find>initializePlay</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -1878,8 +1870,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/widgets/RecipeService.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/baking_widget_provider.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/widgets/BakingWidgetProvider.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/fragments/StepsDetailFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/DetailActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/fragments/StepsDetailFragment.java" />
       </list>
     </option>
   </component>
@@ -2263,7 +2255,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522424372620" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522428122032" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
@@ -2336,7 +2328,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522424372620" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522428122033" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2384,7 +2376,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522424372620" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522428122033" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2567,7 +2559,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522424372621" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522428122034" />
       </method>
     </configuration>
     <list size="2">
@@ -3114,14 +3106,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/fragments/StepsDetailFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="250" column="28" lean-forward="false" selection-start-line="250" selection-start-column="28" selection-end-line="250" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="418">
@@ -3132,9 +3116,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/DetailActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="59" column="33" lean-forward="false" selection-start-line="59" selection-start-column="33" selection-end-line="59" selection-end-column="33" />
+        <state relative-caret-position="589">
+          <caret line="61" column="69" lean-forward="false" selection-start-line="61" selection-start-column="45" selection-end-line="61" selection-end-column="69" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/chadyeo/updatedbakingapp/fragments/StepsDetailFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="169" column="28" lean-forward="true" selection-start-line="169" selection-start-column="28" selection-end-line="169" selection-end-column="28" />
+          <folding>
+            <element signature="e#14224#14225#0" expanded="true" />
+            <element signature="e#14282#14283#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
