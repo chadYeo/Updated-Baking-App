@@ -35,6 +35,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_detail);
         String recipeName = getIntent().getExtras().getString("name");
         getSupportActionBar().setTitle(recipeName);
@@ -45,27 +46,23 @@ public class DetailActivity extends AppCompatActivity {
         StepsDetailFragment stepsDetailFragment = new StepsDetailFragment();
 
         Bundle bundle = new Bundle();
-
-        if (findViewById(R.id.twoPane_linearLayout) != null) {
-            mTwoPane = true;
-            bundle.putBoolean("mTwoPane", true);
-
-            if (savedInstanceState == null) {
-
-                fragmentTransaction.add(R.id.twoPane_list_fragment, stepsListFragment);
-                fragmentTransaction.add(R.id.twoPane_detail_fragment, stepsDetailFragment);
-                fragmentTransaction.commit();
-            }
-        } else {
-            mTwoPane = false;
-            bundle.putBoolean("mTwoPane", false);
-
-            fragmentTransaction.add(R.id.detailActivity_container, stepsListFragment);
-            fragmentTransaction.commit();
-        }
         stepsListFragment.setArguments(bundle);
         stepsDetailFragment.setArguments(bundle);
 
+        if (savedInstanceState == null) {
+            if (findViewById(R.id.twoPane_linearLayout) != null) {
+                mTwoPane = true;
+                bundle.putBoolean("mTwoPane", true);
+                fragmentTransaction.add(R.id.twoPane_list_fragment, stepsListFragment);
+                fragmentTransaction.add(R.id.twoPane_detail_fragment, stepsDetailFragment);
+                fragmentTransaction.commit();
+            } else {
+                mTwoPane = false;
+                bundle.putBoolean("mTwoPane", false);
+                fragmentTransaction.add(R.id.detailActivity_container, stepsListFragment);
+                fragmentTransaction.commit();
+            }
+        }
         Log.e(LOG_TAG, "Bundle twoPane is " + mTwoPane);
     }
 

@@ -72,6 +72,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private NotificationManager mNotificationManager;
 
     ArrayList<Step> steps;
+    int videoPosition;
     private int stepsPosition;
     private int numberOfSteps;
     private boolean mIsExoPlayerFullscreen;
@@ -88,6 +89,11 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
         View view = inflater.inflate(R.layout.fragment_steps_detail, container, false);
 
+        if (savedInstanceState == null) {
+            Bundle arguments = new Bundle();
+            arguments.putInt("position", getActivity().getIntent().getIntExtra("position", 0));
+
+        }
         Bundle extras_stepsPosition = this.getArguments();
         mTwoPane = extras_stepsPosition.getBoolean("mTwoPane");
         Log.e(LOG_TAG, "twoPane is " + mTwoPane);
