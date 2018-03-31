@@ -40,28 +40,39 @@ public class DetailActivity extends AppCompatActivity {
         String recipeName = getIntent().getExtras().getString("name");
         getSupportActionBar().setTitle(recipeName);
 
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        StepsListFragment stepsListFragment = new StepsListFragment();
+        StepsListFragment stepsListFragment = (StepsListFragment)getSupportFragmentManager()
+                .findFragmentByTag(StepsListFragment.class.getCanonicalName());
+        if(stepsListFragment==null){
+            stepsListFragment = new StepsListFragment();
+        }
         StepsDetailFragment stepsDetailFragment = new StepsDetailFragment();
 
         Bundle bundle = new Bundle();
-        stepsListFragment.setArguments(bundle);
-        stepsDetailFragment.setArguments(bundle);
 
-        if (savedInstanceState == null) {
-            if (findViewById(R.id.twoPane_linearLayout) != null) {
-                mTwoPane = true;
-                bundle.putBoolean("mTwoPane", true);
-                fragmentTransaction.add(R.id.twoPane_list_fragment, stepsListFragment);
-                fragmentTransaction.add(R.id.twoPane_detail_fragment, stepsDetailFragment);
-                fragmentTransaction.commit();
-            } else {
-                mTwoPane = false;
-                bundle.putBoolean("mTwoPane", false);
-                fragmentTransaction.add(R.id.detailActivity_container, stepsListFragment);
+        if (findViewById(R.id.twoPane_linearLayout) != null) {
+            mTwoPane = true;
+            bundle.putBoolean("mTwoPane", true);
+
+            if (savedInstanceState == null) {
+
+                fragmentTransaction.replace(R.id.twoPane_list_fragment, stepsListFragment);
+                fragmentTransaction.replace(R.id.twoPane_detail_fragment, stepsDetailFragment);
+
+                stepsListFragment.setArguments(bundle);
+                stepsDetailFragment.setArguments(bundle);
                 fragmentTransaction.commit();
             }
+        } else {
+            mTwoPane = false;
+            bundle.putBoolean("mTwoPane", false);
+
+            fragmentTransaction.replace(R.id.detailActivity_container, stepsListFragment,StepsListFragment.class.getCanonicalName());
+
+            stepsListFragment.setArguments(bundle);
+            fragmentTransaction.commit();
         }
         Log.e(LOG_TAG, "Bundle twoPane is " + mTwoPane);
     }
