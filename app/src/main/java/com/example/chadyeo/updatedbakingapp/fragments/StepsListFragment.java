@@ -2,6 +2,7 @@ package com.example.chadyeo.updatedbakingapp.fragments;
 
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,7 @@ public class StepsListFragment extends Fragment {
     private TextView mIngredientTextView;
     private RecyclerView mStepsRecyclerView;
     private StepAdapter mStepAdapter;
+    private int currentVisiblePosition;
 
     public StepsListFragment() {
         // Required empty public constructor
@@ -35,7 +37,6 @@ public class StepsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_steps_list, container, false);
 
         mIngredientTextView = (TextView)view.findViewById(R.id.ingredients);
@@ -43,18 +44,35 @@ public class StepsListFragment extends Fragment {
         mStepsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ingredients = new ArrayList<>();
-        ingredients = (ArrayList<Ingredient>)getActivity().getIntent().getExtras().getSerializable("ingredients");
+        ingredients = (ArrayList<Ingredient>)getActivity().getIntent().getExtras()
+                .getSerializable("ingredients");
 
         insertIngredientsData(mIngredientTextView, ingredients);
 
         steps = new ArrayList<>();
         steps = (ArrayList<Step>)getActivity().getIntent().getExtras().getSerializable("steps");
 
+        mStepsRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        mStepsRecyclerView.setLayoutManager(linearLayoutManager);
         mStepAdapter = new StepAdapter(steps);
         mStepsRecyclerView.setAdapter(mStepAdapter);
 
-
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LinearLayoutManager) mStepsRecyclerView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        currentVisiblePosition = 0;
+        currentVisiblePosition =
+                ((LinearLayoutManager)mStepsRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
     }
 
     private void insertIngredientsData(TextView ingredientTextView, ArrayList<Ingredient> ingredients) {
