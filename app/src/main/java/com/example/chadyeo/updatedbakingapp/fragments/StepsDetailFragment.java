@@ -90,6 +90,8 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
         View view = inflater.inflate(R.layout.fragment_steps_detail, container, false);
 
+        setRetainInstance(true);
+
         if (savedInstanceState != null) {
            videoPosition = savedInstanceState.getLong("SELECTED_POSITION", C.TIME_UNSET);
         }

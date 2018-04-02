@@ -40,7 +40,6 @@ public class DetailActivity extends AppCompatActivity {
         String recipeName = getIntent().getExtras().getString("name");
         getSupportActionBar().setTitle(recipeName);
 
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         StepsListFragment stepsListFragment = (StepsListFragment)getSupportFragmentManager()
@@ -48,15 +47,15 @@ public class DetailActivity extends AppCompatActivity {
         if(stepsListFragment==null){
             stepsListFragment = new StepsListFragment();
         }
+
         StepsDetailFragment stepsDetailFragment = new StepsDetailFragment();
 
         Bundle bundle = new Bundle();
 
-        if (findViewById(R.id.twoPane_linearLayout) != null) {
-            mTwoPane = true;
-            bundle.putBoolean("mTwoPane", true);
-
-            if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
+            if (findViewById(R.id.twoPane_linearLayout) != null) {
+                mTwoPane = true;
+                bundle.putBoolean("mTwoPane", true);
 
                 fragmentTransaction.replace(R.id.twoPane_list_fragment, stepsListFragment);
                 fragmentTransaction.replace(R.id.twoPane_detail_fragment, stepsDetailFragment);
@@ -64,16 +63,17 @@ public class DetailActivity extends AppCompatActivity {
                 stepsListFragment.setArguments(bundle);
                 stepsDetailFragment.setArguments(bundle);
                 fragmentTransaction.commit();
+            } else {
+                mTwoPane = false;
+                bundle.putBoolean("mTwoPane", false);
+
+                fragmentTransaction.replace(R.id.detailActivity_container, stepsListFragment,StepsListFragment.class.getCanonicalName());
+
+                stepsListFragment.setArguments(bundle);
+                fragmentTransaction.commit();
             }
-        } else {
-            mTwoPane = false;
-            bundle.putBoolean("mTwoPane", false);
-
-            fragmentTransaction.replace(R.id.detailActivity_container, stepsListFragment,StepsListFragment.class.getCanonicalName());
-
-            stepsListFragment.setArguments(bundle);
-            fragmentTransaction.commit();
         }
+
         Log.e(LOG_TAG, "Bundle twoPane is " + mTwoPane);
     }
 
