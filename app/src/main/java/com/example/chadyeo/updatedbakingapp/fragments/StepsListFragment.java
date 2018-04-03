@@ -1,6 +1,8 @@
 package com.example.chadyeo.updatedbakingapp.fragments;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;

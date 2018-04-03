@@ -1,5 +1,9 @@
 package com.example.chadyeo.updatedbakingapp;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +13,7 @@ import android.view.MenuItem;
 
 import com.example.chadyeo.updatedbakingapp.fragments.StepsDetailFragment;
 import com.example.chadyeo.updatedbakingapp.fragments.StepsListFragment;
+import com.example.chadyeo.updatedbakingapp.widgets.BakingWidgetProvider;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -73,6 +78,8 @@ public class DetailActivity extends AppCompatActivity {
                 fragmentTransaction.commit();
             }
         }
+
+
 
         Log.e(LOG_TAG, "Bundle twoPane is " + mTwoPane);
     }

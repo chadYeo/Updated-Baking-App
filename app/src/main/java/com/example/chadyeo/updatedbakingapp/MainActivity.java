@@ -1,7 +1,11 @@
 package com.example.chadyeo.updatedbakingapp;
 
 import android.app.LoaderManager;
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -28,6 +32,7 @@ import com.example.chadyeo.updatedbakingapp.api.BakingRetrofitService;
 import com.example.chadyeo.updatedbakingapp.data.RecipeContentResolver;
 import com.example.chadyeo.updatedbakingapp.data.RecipeContract;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
+import com.example.chadyeo.updatedbakingapp.widgets.BakingWidgetProvider;
 
 import java.util.ArrayList;
 import java.util.List;

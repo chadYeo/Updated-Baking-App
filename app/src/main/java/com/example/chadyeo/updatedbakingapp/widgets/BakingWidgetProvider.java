@@ -6,11 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.ImageButton;
 import android.widget.RemoteViews;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.chadyeo.updatedbakingapp.MainActivity;
 import com.example.chadyeo.updatedbakingapp.R;
@@ -31,6 +27,7 @@ public class BakingWidgetProvider extends AppWidgetProvider {
         insertIngredientsData(views, ingredients, context);
 
         Intent intent = new Intent(context, MainActivity.class);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.baking_widget_provide_linearLayout, pendingIntent);
 
@@ -42,6 +39,13 @@ public class BakingWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
+        ComponentName thisWidget = new ComponentName(context, BakingWidgetProvider.class);
+        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+        Intent intent = new Intent(context.getApplicationContext(), RecipeService.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, allWidgetIds);
+        context.startService(intent);
+        context.sendBroadcast(intent);
     }
 
     public static void updateRecipeWidgets(Context context, AppWidgetManager appWidgetManager,

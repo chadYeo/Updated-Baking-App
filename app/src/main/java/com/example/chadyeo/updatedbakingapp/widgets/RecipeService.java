@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -33,6 +34,11 @@ public class RecipeService extends IntentService {
         ArrayList<Ingredient> ingredients;
 
         int currentRecipeId = 0;
+
+        // SharedPreferneces to show last viewed recipe ingredients in Widget
+        SharedPreferences sharedPreferences = getSharedPreferences("LAST_VIEWED_RECIPE", MODE_PRIVATE);
+        int restoredRecipeId = sharedPreferences.getInt("LAST_VIEWED_RECIPE", 0);
+        currentRecipeId = restoredRecipeId;
 
         if (intent.getAction() != null) {
             String ex = intent.getAction().toString();
