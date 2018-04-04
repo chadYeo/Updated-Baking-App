@@ -2,6 +2,7 @@ package com.example.chadyeo.updatedbakingapp;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -79,9 +80,17 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
 
-
-
         Log.e(LOG_TAG, "Bundle twoPane is " + mTwoPane);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     public boolean isTwoPane() {

@@ -17,6 +17,7 @@ import com.example.chadyeo.updatedbakingapp.R;
 import com.example.chadyeo.updatedbakingapp.model.Ingredient;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
 import com.example.chadyeo.updatedbakingapp.model.Step;
+import com.example.chadyeo.updatedbakingapp.widgets.RecipeService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         return new RecipeViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(final RecipeViewHolder holder, int position) {
         final Recipe recipe = recipes.get(position);
@@ -63,11 +65,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                 }
                 context.startActivity(detailIntent);
 
-                // SharedPreferneces to show last viewed recipe ingredients in Widget
+                // SharedPreferences to show last viewed recipe ingredients in Widget
                 SharedPreferences sharedPreferences = context.getSharedPreferences("LAST_VIEWED_RECIPE", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("LAST_VIEWED_RECIPE", holder.getAdapterPosition());
                 editor.apply();
+                RecipeService.startActionRecipe(context);
+
                 Log.e(LOG_TAG, "Clicked Position from the Recipe List for Widget: " + String.valueOf(holder.getAdapterPosition()));
             }
         });
