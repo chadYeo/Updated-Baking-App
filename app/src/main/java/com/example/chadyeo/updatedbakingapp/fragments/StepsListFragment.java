@@ -79,12 +79,6 @@ public class StepsListFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mNestedScrollView.scrollTo(scrollPositionX, scrollPositionY);
-    }
-
     private void insertIngredientsData(TextView ingredientTextView, ArrayList<Ingredient> ingredients) {
         for (Ingredient ingredient : ingredients) {
             float qty;
