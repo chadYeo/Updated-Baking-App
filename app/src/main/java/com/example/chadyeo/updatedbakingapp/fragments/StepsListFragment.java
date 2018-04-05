@@ -6,11 +6,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.chadyeo.updatedbakingapp.R;
@@ -27,10 +30,13 @@ public class StepsListFragment extends Fragment {
     ArrayList<Ingredient> ingredients;
     ArrayList<Step> steps;
 
+    private NestedScrollView mNestedScrollView;
     private TextView mIngredientTextView;
     private RecyclerView mStepsRecyclerView;
     private StepAdapter mStepAdapter;
-    private int currentVisiblePosition;
+
+    private int scrollPositionX;
+    private int scrollPositionY;
 
     public StepsListFragment() {
         // Required empty public constructor
@@ -38,12 +44,22 @@ public class StepsListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_steps_list, container, false);
 
         mIngredientTextView = (TextView)view.findViewById(R.id.ingredients);
         mStepsRecyclerView = (RecyclerView)view.findViewById(R.id.detailView_steps_recyclerView);
         mStepsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mNestedScrollView = (NestedScrollView)view.findViewById(R.id.nestedScrollView);
+        if (mNestedScrollView != null) {
+            mNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    scrollPositionX = scrollX;
+                    scrollPositionY = scrollY;
+                }
+            });
+        }
 
         ingredients = new ArrayList<>();
         ingredients = (ArrayList<Ingredient>)getActivity().getIntent().getExtras()
@@ -66,15 +82,7 @@ public class StepsListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((LinearLayoutManager) mStepsRecyclerView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        currentVisiblePosition = 0;
-        currentVisiblePosition =
-                ((LinearLayoutManager)mStepsRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+        mNestedScrollView.scrollTo(scrollPositionX, scrollPositionY);
     }
 
     private void insertIngredientsData(TextView ingredientTextView, ArrayList<Ingredient> ingredients) {
