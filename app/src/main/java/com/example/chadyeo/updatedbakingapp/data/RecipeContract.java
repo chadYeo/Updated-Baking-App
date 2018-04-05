@@ -45,5 +45,6 @@ public class RecipeContract {
         public static final String STEPS_COLUMN_SHORT_DESC = "short_desc";
         public static final String STEPS_COLUMN_DESC = "desc";
         public static final String STEPS_COLUMN_VIDEOURL = "videoURL";
+        public static final String STEPS_COLUMN_THUMBNAILURL = "thumbnailURL";
     }
 }

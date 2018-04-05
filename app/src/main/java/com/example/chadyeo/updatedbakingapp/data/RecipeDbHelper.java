@@ -40,7 +40,8 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
                         RecipeEntry.STEPS_COLUMN_ID + " INTEGER NOT NULL, " +
                         RecipeEntry.STEPS_COLUMN_SHORT_DESC + " TEXT NOT NULL, " +
                         RecipeEntry.STEPS_COLUMN_DESC + " TEXT NOT NULL, " +
-                        RecipeEntry.STEPS_COLUMN_VIDEOURL + " TEXT NOT NULL);";
+                        RecipeEntry.STEPS_COLUMN_VIDEOURL + " TEXT NOT NULL, " +
+                        RecipeEntry.STEPS_COLUMN_THUMBNAILURL + " TEXT NOT NULL);";
 
         db.execSQL(CREATE_RECIPE_TABLE);
         db.execSQL(CREATE_INGREDIENT_TABLE);

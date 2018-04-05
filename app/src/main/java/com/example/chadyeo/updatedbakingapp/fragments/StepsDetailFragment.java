@@ -8,9 +8,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
@@ -49,7 +51,9 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 
@@ -79,6 +83,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private boolean mIsExoPlayerFullscreen;
     private String videoUrl;
     private String detailSteps;
+    private String thumbnailURL;
     private boolean mTwoPane;
 
     public StepsDetailFragment() {
@@ -123,8 +128,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
         videoUrl = steps.get(stepsPosition).getVideoURL();
         detailSteps = steps.get(stepsPosition).getDescription();
+        thumbnailURL = steps.get(stepsPosition).getThumbnailURL();
 
         if (videoUrl.isEmpty()) {
+            if (!thumbnailURL.isEmpty()) {
+                Picasso.get().load(thumbnailURL).fit().into(mNoVideoImageView);
+            }
             mNoVideoImageView.setVisibility(View.VISIBLE);
             mSimpleExoPlayerView.setVisibility(View.GONE);
             mSimpleExoPlayerView.hideController();
@@ -147,7 +156,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             }
         });
 
-
         mArrowBackImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,8 +172,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     mDetailSteps_textView.setText(detailSteps);
 
                     videoUrl = steps.get(stepsPosition).getVideoURL();
+                    thumbnailURL = steps.get(stepsPosition).getThumbnailURL();
 
                     if (videoUrl.isEmpty()) {
+                        if (!thumbnailURL.isEmpty()) {
+                            Picasso.get().load(thumbnailURL).fit().into(mNoVideoImageView);
+                        }
                         mNoVideoImageView.setVisibility(View.VISIBLE);
                         mSimpleExoPlayerView.setVisibility(View.GONE);
                         mSimpleExoPlayerView.hideController();
@@ -194,8 +206,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     mDetailSteps_textView.setText(detailSteps);
 
                     videoUrl = steps.get(stepsPosition).getVideoURL();
+                    thumbnailURL = steps.get(stepsPosition).getThumbnailURL();
 
                     if (videoUrl.isEmpty()) {
+                        if (!thumbnailURL.isEmpty()) {
+                            Picasso.get().load(thumbnailURL).fit().into(mNoVideoImageView);
+                        }
                         mNoVideoImageView.setVisibility(View.VISIBLE);
                         mSimpleExoPlayerView.setVisibility(View.GONE);
                         mSimpleExoPlayerView.hideController();

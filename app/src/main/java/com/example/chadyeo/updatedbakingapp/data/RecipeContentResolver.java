@@ -140,6 +140,7 @@ public class RecipeContentResolver {
                 mStepValues.put(RecipeContract.RecipeEntry.STEPS_COLUMN_SHORT_DESC, currentStep.getShortDescription());
                 mStepValues.put(RecipeContract.RecipeEntry.STEPS_COLUMN_DESC, currentStep.getDescription());
                 mStepValues.put(RecipeContract.RecipeEntry.STEPS_COLUMN_VIDEOURL, currentStep.getVideoURL());
+                mStepValues.put(RecipeContract.RecipeEntry.STEPS_COLUMN_THUMBNAILURL, currentStep.getThumbnailURL());
                 stepsContentValuesArrayList.add(mStepValues);
             }
         }
