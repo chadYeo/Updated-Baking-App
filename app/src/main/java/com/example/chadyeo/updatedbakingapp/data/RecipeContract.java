@@ -30,6 +30,7 @@ public class RecipeContract {
         public static final String RECIPES_COLUMN_ID = "recipe_id";
         public static final String RECIPES_COLUMN_NAME = "name";
         public static final String RECIPES_COLUMN_SERVINGS = "servings";
+        public static final String RECIPES_COLUMN_IMAGE = "image";
 
         //ingredients table info
         public static final String INGREDIENTS_TABLE_NAME = "ingredients";

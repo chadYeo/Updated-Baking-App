@@ -54,6 +54,7 @@ public class RecipeContentResolver {
             mRecipeValue.put(RecipeContract.RecipeEntry.RECIPES_COLUMN_ID, data.getId());
             mRecipeValue.put(RecipeContract.RecipeEntry.RECIPES_COLUMN_NAME, data.getName());
             mRecipeValue.put(RecipeContract.RecipeEntry.RECIPES_COLUMN_SERVINGS, data.getServings());
+            mRecipeValue.put(RecipeContract.RecipeEntry.RECIPES_COLUMN_IMAGE, data.getImage());
             recipeContentValues[i] = mRecipeValue;
         }
         return recipeContentValues;

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.chadyeo.updatedbakingapp.DetailActivity;
@@ -18,6 +19,7 @@ import com.example.chadyeo.updatedbakingapp.model.Ingredient;
 import com.example.chadyeo.updatedbakingapp.model.Recipe;
 import com.example.chadyeo.updatedbakingapp.model.Step;
 import com.example.chadyeo.updatedbakingapp.widgets.RecipeService;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +50,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         final Recipe recipe = recipes.get(position);
         String recipeName = recipe.getName();
         int recipeServings = recipe.getServings();
+        String image = recipe.getImage();
 
+        if (!image.isEmpty()) {
+            Picasso.get().load(image).fit().into(holder.mRecipeImageView);
+        }
         holder.mNameTextView.setText(recipeName);
         holder.mServingTextView.setText(String.valueOf(recipeServings));
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,11 +94,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public static class RecipeViewHolder extends RecyclerView.ViewHolder {
 
+        private ImageView mRecipeImageView;
         private TextView mNameTextView;
         private TextView mServingTextView;
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
+            mRecipeImageView = (ImageView)itemView.findViewById(R.id.dessert_imageView);
             mNameTextView = (TextView)itemView.findViewById(R.id.name);
             mServingTextView = (TextView)itemView.findViewById(R.id.serving);
         }

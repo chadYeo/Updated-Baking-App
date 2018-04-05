@@ -23,7 +23,8 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
                         RecipeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         RecipeEntry.RECIPES_COLUMN_ID + " INTEGER NOT NULL, " +
                         RecipeEntry.RECIPES_COLUMN_NAME + " TEXT NOT NULL, " +
-                        RecipeEntry.RECIPES_COLUMN_SERVINGS + " TEXT NOT NULL);";
+                        RecipeEntry.RECIPES_COLUMN_SERVINGS + " TEXT NOT NULL, " +
+                        RecipeEntry.RECIPES_COLUMN_IMAGE + " TEXT NOT NULL);";
 
         final String CREATE_INGREDIENT_TABLE =
                 "CREATE TABLE " + RecipeEntry.INGREDIENTS_TABLE_NAME + " (" +
