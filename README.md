@@ -23,8 +23,9 @@ One of the skills I demonstrated in this project is how to handle unexpected inp
   
   <h3>Source:</h3>
     <ul>
-      <li>ProviGen (https://github.com/TimotheeJeannin/ProviGen): Easily make a ContentProvider from a ContractClass</li>
-      <li>KGJSonConverter (https://github.com/kosalgeek/KGJsonConverter): This is a library for Android to convert/parse JSON Text into a List/ArrayList of a Generic Class</li>
-      <li>Generic AsyncTask (https://github.com/kosalgeek/generic_asynctask): This is a custom Android generic AsyncTask class that performs a POST call from Android App to Web Server and get the response's result back</li>
+      <li>Android RecyclerView (https://github.com/googlesamples/android-RecyclerView): RecyclerView can display large datasets that can be scrolled efficiently by recycling a limited number of views.</li>
+  <li>ExoPlayer (https://github.com/google/ExoPlayer): ExoPlayer is an application level media player for Android. It provides an alternative to Android’s MediaPlayer API for playing audio and video both locally and over the Internet.</li>
+  <li>Retrofit (https://github.com/square/retrofit): Type-safe HTTP client for Android and Java by Square, Inc.</li>
+  <li>Gson (https://github.com/google/gson): Gson is a Java library that can be used to convert Java Objects into their JSON representation. </li>
     </ul>
 </body>
